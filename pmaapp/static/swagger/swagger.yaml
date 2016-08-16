@@ -4,13 +4,13 @@ info:
   description: Provision Cloud Computing resources via API.
   version: "0.1.1"
 # the domain of the service
-host: 127.0.0.1:8002
+host: 127.0.0.1:8001
 # array of all schemes that your API supports
 schemes:
 # TODO: Change to HTTPS when not on localhost!
   - http
 # will be prefixed to all paths
-#basePath: /rpapp
+#basePath: /pmaapp
 consumes:
   - application/json
 produces:
@@ -23,216 +23,6 @@ securityDefinitions:
   basic:
     type: basic
 paths:
-  /clusters/:
-    get:
-      summary: Get the list of all the cluster definitions registered.
-      description: |
-        Get the list of all the cluster definitions registered. No authentification is required.
-      tags:
-        - Cluster definitions
-      responses:
-        200:
-          description: An array of Cluster definitions
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Cluster'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      summary: Add a new cluster definition.
-      description: |
-        Add a new cluster definition. Authentification is required.
-      security:
-        - basic: []
-        - api_key: []
-      
-      parameters:
-        - name: data
-          in: body
-          description: cluster definition
-          required: true
-          schema:
-            $ref: '#/definitions/ClusterPost'
-      tags:
-        - Cluster definitions
-      responses:
-        201:
-          description: The newly created cluster definition
-          schema:
-            $ref: '#/definitions/Cluster'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-  /clusters/{id}/:
-    get:
-      summary: Get a single cluster definition.
-      description: |
-        Get a single cluster definition. Authentification is required.
-      parameters:
-        - name: id
-          in: path
-          description: Id of the cluster description
-          required: true
-          type: integer
-          minimum: 0
-      tags:
-        - Cluster definitions
-      responses:
-        200:
-          description: The Cluster definitions matching the given Id
-          schema:
-            $ref: '#/definitions/Cluster'
-        404:
-          description: No cluster definition with the given Id
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    put:
-      summary: Redefine an already existing cluster definition.
-      description: |
-        Redefine an already existing cluster definition. Authentification is required.
-      security:
-        - basic: []
-        - api_key: []
-      
-      parameters:
-        - name: id
-          in: path
-          description: Id of the cluster description
-          required: true
-          type: integer
-          minimum: 0
-        - name: data
-          in: body
-          description: cluster definition
-          required: true
-          schema:
-            $ref: '#/definitions/ClusterPost'
-      tags:
-        - Cluster definitions
-      responses:
-        200:
-          description: The updated cluster definition
-          schema:
-            $ref: '#/definitions/Cluster'
-        404:
-          description: No cluster definition with the given Id
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    
-    delete:
-      summary: Delete an already existing cluster definition.
-      description: |
-        Delete an already existing cluster definition. Authentification is required.
-      parameters:
-        - name: id
-          in: path
-          description: Id of the cluster description
-          required: true
-          type: integer
-          minimum: 0
-      security:
-        - basic: []
-        - api_key: []
-      tags:
-        - Cluster definitions
-      responses:
-        204:
-          description: cluster definition correctly deleted
-        404:
-          description: No cluster definition with the given Id
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-  /hosts/:
-    get:
-      summary: Get the list of all the Host definitions registered.
-      description: |
-        Get the list of all the Host definitions registered. No authentification is required.
-      tags:
-        - Host definitions
-      responses:
-        200:
-          description: An array of Host definitions
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/hosts'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      summary: Add a new host definition.
-      description: |
-        Add a new host definition. Authentification is required.
-      security:
-        - basic: []
-        - api_key: []
-      
-      parameters:
-        - name: data
-          in: body
-          description: host definition
-          required: true
-          schema:
-            $ref: '#/definitions/hostsPost'
-      tags:
-        - Host definitions
-      responses:
-        201:
-          description: The newly created host definition
-          schema:
-            $ref: '#/definitions/hosts'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /hosts/{id}/:
-    get:
-      summary: Get a single host definition.
-      description: |
-        Get a single host definition. Authentification is required.
-      parameters:
-        - name: id
-          in: path
-          description: Id of the host description
-          required: true
-          type: integer
-          minimum: 0
-      tags:
-        - Host definitions
-      responses:
-        200:
-          description: The Host definitions matching the given Id
-          schema:
-            $ref: '#/definitions/hosts'
-        404:
-          description: No host definition with the given Id
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    
-            
   /users/:
     get:
       summary: Get the list of all the users registered.
@@ -402,30 +192,28 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-
-
-  /credentials/:
+  /ops/:
     get:
-      summary: Get the list of all the credentials registered.
+      summary: Get the list of all the ops registered.
       description: |
-        Get the list of all the users registered. No authentification is required.
+        Get the list of all the ops registered. No authentification is required.
       tags:
-        - Credentials
+        - Ops
       responses:
         200:
-          description: An array of credentials
+          description: An array of ops
           schema:
             type: array
             items:
-              $ref: '#/definitions/Credential'
+              $ref: '#/definitions/Op'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
     post:
-      summary: Register new credentials.
+      summary: Register a new op.
       description: |
-        Register new credentials. Authentification is required.
+        Register a new op. Authentification is required.
       security:
         - basic: []
         - api_key: []
@@ -433,42 +221,42 @@ paths:
       parameters:
         - name: data
           in: body
-          description: Credentials
+          description: Op
           required: true
           schema:
-            $ref: '#/definitions/CredentialPost'
+            $ref: '#/definitions/OpPost'
       tags:
-        - Credentials
+        - Ops
       responses:
         201:
-          description: The newly created credentials
+          description: The newly created op
           schema:
-            $ref: '#/definitions/Credential'
+            $ref: '#/definitions/Op'
         default:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /credentials/{id}/:
+  /ops/{id}/:
     get:
-      summary: Get a single piece of credentials.
+      summary: Get a single op.
       description: |
-        Get a single piece of credentials. Authentification is required.
+        Get a single op. Authentification is required.
       parameters:
         - name: id
           in: path
-          description: ID of the credentials
+          description: ID of the op
           required: true
           type: integer
           minimum: 0
       tags:
-        - Credentials
+        - Ops
       responses:
         200:
-          description: The credentials matching the given ID
+          description: The op matching the given ID
           schema:
-            $ref: '#/definitions/Credential'
+            $ref: '#/definitions/Op'
         404:
-          description: No user with the given ID
+          description: No op with the given ID
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -476,34 +264,34 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     put:
-      summary: Redefine an already existing piece of credentials.
+      summary: Redefine an already existing op.
       description: |
-        Redefine an already existing piece of credentials. Authentification is required.
+        Redefine an already existing op. Authentification is required.
       security:
         - basic: []
         - api_key: []
       parameters:
         - name: id
           in: path
-          description: ID of the credentials
+          description: ID of the op
           required: true
           type: integer
           minimum: 0
         - name: data
           in: body
-          description: Credentials
+          description: Op
           required: true
           schema:
-            $ref: '#/definitions/Credential'
+            $ref: '#/definitions/OpPost'
       tags:
-        - Credentials
+        - Ops
       responses:
         200:
-          description: The updated credentials
+          description: The updated op
           schema:
-            $ref: '#/definitions/Credential'
+            $ref: '#/definitions/Op'
         404:
-          description: No credentials with the given ID
+          description: No op with the given ID
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -511,9 +299,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     patch:
-      summary: Modify an already existing piece of credentials.
+      summary: Modify an already existing op.
       description: |
-        Modify an already existing piece of credentials. Authentification is required.
+        Modify an already existing op. Authentification is required.
       security:
         - basic: []
         - api_key: []
@@ -521,25 +309,25 @@ paths:
       parameters:
         - name: id
           in: path
-          description: ID of the credentials
+          description: ID of the op
           required: true
           type: integer
           minimum: 0
         - name: data
           in: body
-          description: Credentials
+          description: Op
           required: true
           schema:
-            $ref: '#/definitions/CredentialPatch'
+            $ref: '#/definitions/OpPatch'
       tags:
-        - Credentials
+        - Ops
       responses:
         200:
-          description: The updated user
+          description: The updated op
           schema:
-            $ref: '#/definitions/Credential'
+            $ref: '#/definitions/Op'
         404:
-          description: No user with the given ID
+          description: No op with the given ID
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -547,13 +335,13 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     delete:
-      summary: Delete an already existing piece of credentials.
+      summary: Delete an already existing op.
       description: |
-        Delete an already existing piece of credentials. Authentification is required.
+        Delete an already existing op. Authentification is required.
       parameters:
         - name: id
           in: path
-          description: ID of the credentials
+          description: ID of the op
           required: true
           type: integer
           minimum: 0
@@ -561,71 +349,12 @@ paths:
         - basic: []
         - api_key: []
       tags:
-        - Credentials
+        - Ops
       responses:
         204:
-          description: Credentials correctly deleted
+          description: Op correctly deleted
         404:
-          description: No credentials with the given ID
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-  /credentials/user/{id}/:
-    get:
-      summary: Get all the credentials of a user (without password).
-      description: |
-        Get all the credentials of a user (without password). Authentification is not required.
-      parameters:
-        - name: id
-          in: path
-          description: ID of the user
-          required: true
-          type: integer
-          minimum: 0
-      tags:
-        - Credentials
-      responses:
-        200:
-          description: An array of credentials
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Credential'
-        404:
-          description: No user with the given ID
-          schema:
-            $ref: '#/definitions/Error'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-
-  /rsa_public_key/{id}/:
-    get:
-      summary: Get the RSA public key of a user.
-      description: |
-        Get the RSA public key of a user. Authentification is not required.
-      parameters:
-        - name: id
-          in: path
-          description: ID of the user
-          required: true
-          type: integer
-          minimum: 0
-      tags:
-        - Users
-      responses:
-        200:
-          description: The RSA public key of the user matching the given ID
-          schema:
-            $ref: '#/definitions/PublicKey'
-        404:
-          description: No user with the given ID
+          description: No op with the given ID
           schema:
             $ref: '#/definitions/Error'
         default:
@@ -656,94 +385,6 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
-  Cluster:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: Unique ID of the cluster
-      name:
-        type: string
-        description: Name given to the cluster
-      uuid:
-        type: string
-        description: Internal UUID given to the cluster
-      public_key:
-        type: string
-        description: Public key used to identify nodes of the cluster
-      status:
-        type: string
-        description: Status of the cluster
-      hosts_ids:
-        type: array
-        description: IDs of nodes of the cluster (can be null)
-        items:
-          type: string
-      hosts_ips:
-        type: array
-        description: IP addresses of nodes of the cluster (can be null)
-        items:
-          type: string
-      master_node_id:
-        type: integer
-        description: ID of the master node of the cluster (can be null)
-      master_node_ip:
-        type: string
-        description: IP address of the master node of the cluster (can be null)
-      user_id:
-        type: integer
-        description: ID of the user that created the cluster
-      appliance:
-        type: string
-        description: Appliance of the cluster
-      appliance_impl:
-        type: string
-        description: Appliance of the cluster
-
-  ClusterPost:
-    type: object
-    required:
-      - name
-      - appliance
-    properties:
-      name:
-        description: Name given to the cluster
-        type: string
-      appliance:
-        type: string
-        description: Appliance of the cluster
-
-  hosts:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: Unique ID of the host
-      name:
-        type: string
-        description: Name given to the host
-      is_master:
-        type: boolean
-        description: True if the host is a master_node
-      instance_ip:
-        type: string
-        description: IP address of the host
-      cluster_id:
-        type: integer
-        description: ID of the cluster
-
-  hostsPost:
-    type: object
-    required:
-      - cluster_id
-    properties:
-      cluster_id:
-        description: ID of the cluster in which a new node will be added
-        type: integer
-      name:
-        description: Name given to the host
-        type: string
-
   User:
     type: object
     properties:
@@ -762,16 +403,6 @@ definitions:
       email:
         type: string
         description: Email of the user
-      credentials:
-        type: array
-        description: Array of the credentials IDs of the user
-        items:
-          type: integer
-      clusters:
-        type: array
-        description: Array of the clusters IDs of the user
-        items:
-          type: integer
       is_staff:
         type: integer
         description: Boolean stating wether the user is a staff member or not
@@ -824,51 +455,44 @@ definitions:
       email:
         type: string
         description: Email of the user
-  PublicKey:
+  Op:
     type: object
     properties:
-      public_key:
-        type: string
-        description: RSA public key of the user
-
-  Credential:
-    type: object
-    required:
-      - site_name
-      - user
-      - credentials
-    properties:
-      site_name:
-        type: string
-        description: Name of the site
-      user:
+      id:
         type: integer
-        description: ID of the user
-      credentials:
+        description: Unique identifier representing a specific op
+      script:
         type: string
-        description: Encrypted credentials (JSON format encrypted)
-  CredentialPost:
+        description: Script of the op
+      callback_url:
+        type: string
+        description: Callback URL of the op
+      status:
+        type: string
+        description: Status of the op
+      info:
+        type: string
+        description: Formatted information about the progress of the op
+  OpPost:
     type: object
     required:
-      - site_name
-      - credentials
+      - script
     properties:
-      site_name:
+      script:
         type: string
-        description: Name of the site
-      credentials:
+        description: Script of the op
+      callback_url:
         type: string
-        description: Encrypted credentials (JSON format encrypted)
-  CredentialPatch:
+        description: Callback URL of the op
+  OpPatch:
     type: object
     properties:
-      site_name:
+      script:
         type: string
-        description: Name of the site
-      credentials:
+        description: Script of the op
+      callback_url:
         type: string
-        description: Encrypted credentials (JSON format encrypted)
-
+        description: Callback URL of the op
   Error:
     type: object
     properties:
