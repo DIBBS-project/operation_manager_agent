@@ -11,7 +11,7 @@ class Op(models.Model):
 
     script = models.TextField()
     callback_url = models.CharField(max_length=2048, blank=True, default='')
-    status = models.CharField(max_length=512, blank=True, default='')
+    status = models.CharField(max_length=512, blank=True, default='PENDING')
 
     # Updated when requested? May be removed in favor of a serializer method
     info = models.TextField(blank=True, default='')

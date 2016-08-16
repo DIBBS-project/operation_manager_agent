@@ -8,6 +8,9 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import list_route, detail_route
 
+from lib.mister_fs import MisterFs
+from lib.mister_hadoop import MisterHadoop
+import uuid
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -56,20 +59,33 @@ class OpViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    # @list_route()
+
     @detail_route(methods=['post'])
     def run_op(self, request, pk=None):
-        from lib.mister_fs import MisterFs
         mister_fs = MisterFs()
         op = Op.objects.get(pk=pk)
         print(op)
+        random_file_name = str(uuid.uuid4())
         generated_script = """
 #!/bin/bash;
-set -x;
+#set -x;
 %s
-        """ % (op.script)
-        mister_fs.create_file("toto", generated_script)
-        # op_id = request.data["id"]
-        print("running op %s" % (op))
+touch %s_finished
+        """ % (op.script, random_file_name)
+        mister_fs.create_file(random_file_name, generated_script)
+        op.status = "RUNNING"
+        op.save()
+        print("running op via tmp/%s script" % (random_file_name))
+        mister_fs.run_file(random_file_name)
+        op.status = "FINISHED"
+        op.save()
         return Response({"Hello"})
+
+    @list_route()
+    def get_executions(self, request):
+        mister_hadoop = MisterHadoop()
+        executions = mister_hadoop.get_running_jobs()
+        print("executions: %s" % (executions))
+        return Response(executions)
+
 
