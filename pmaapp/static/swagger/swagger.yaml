@@ -4,7 +4,7 @@ info:
   description: Provision Cloud Computing resources via API.
   version: "0.1.1"
 # the domain of the service
-host: 127.0.0.1:8001
+host: 127.0.0.1:8021
 # array of all schemes that your API supports
 schemes:
 # TODO: Change to HTTPS when not on localhost!
