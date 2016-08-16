@@ -21,3 +21,4 @@ class OpSerializer(serializers.ModelSerializer):
         model = Op
         fields = ('id', 'user', 'script', 'callback_url', 'status', 'info')
         read_only_fields = ('id', 'user', 'status', 'info')
+
