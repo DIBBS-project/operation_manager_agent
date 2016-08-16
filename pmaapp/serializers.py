@@ -19,5 +19,5 @@ class UserSerializer(serializers.ModelSerializer):
 class OpSerializer(serializers.ModelSerializer):
     class Meta:
         model = Op
-        fields = ('user', 'script', 'callback_url', 'status', 'info')
+        fields = ('id', 'user', 'script', 'callback_url', 'status', 'info')
         read_only_fields = ('user', 'status', 'info')
