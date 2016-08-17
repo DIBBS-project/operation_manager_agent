@@ -12,6 +12,7 @@ from lib.mister_fs import MisterFs
 from lib.mister_hadoop import MisterHadoop
 import uuid
 
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
@@ -58,7 +59,6 @@ class OpViewSet(viewsets.ModelViewSet):
 
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
 
     @detail_route(methods=['post'])
     def run_op(self, request, pk=None):
