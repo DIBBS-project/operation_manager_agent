@@ -7,6 +7,7 @@ from serializers import UserSerializer, OpSerializer
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import list_route, detail_route
+from django.contrib.auth.models import User
 
 from lib.mister_fs import MisterFs
 from lib.mister_hadoop import MisterHadoop
@@ -18,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
     This viewset automatically provides `list`, `create`, `retrieve`,
     `update` and `destroy` actions.
     """
-    queryset = django.contrib.auth.get_user_model().objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -29,6 +30,8 @@ class UserViewSet(viewsets.ModelViewSet):
         data2[u'ops'] = []
         serializer = self.get_serializer(data=data2)
         serializer.is_valid(raise_exception=True)
+
+        # Create the object in database
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

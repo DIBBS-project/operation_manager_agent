@@ -21,4 +21,4 @@ class Op(models.Model):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
-        Token.objects.create(author=instance)
+        Token.objects.create(user=instance)
