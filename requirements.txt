@@ -1,2 +1,2 @@
-django>=1.8.0
+django>=1.8.0,<1.10
 djangorestframework
