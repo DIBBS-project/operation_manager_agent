@@ -170,10 +170,20 @@ class MisterHadoop:
         subprocess.call("bash %s" % (output_file), shell=True)
 
     def get_running_jobs(self):
+        def adapt_to_required_format(data):
+            return {
+                "op_id": data["user"],
+                "execution_id": data["id"],
+                "progress": data["progress"],
+                "info": """{
+                    "name": "%s"
+                }""" % (data["name"])
+            }
         response = self.call_whdfs("cluster/apps", "GET")
         result = []
         if response["apps"]:
             result = response["apps"]["app"] if len(response) > 0 and "app" in response["apps"] else []
+        result = map(adapt_to_required_format, result)
         return result
 
 

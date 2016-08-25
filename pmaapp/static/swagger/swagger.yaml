@@ -361,6 +361,55 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /ops/{id}/run_op/:
+    post:
+      summary: Run a specified op.
+      description: |
+        Get a single op. Authentification is required.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the op
+          required: true
+          type: integer
+          minimum: 0
+      tags:
+        - Ops
+      responses:
+        200:
+          description: The op matching the given ID
+          schema:
+            $ref: '#/definitions/Op'
+        404:
+          description: No op with the given ID
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /get_executions/:
+    get:
+      summary: Get list of all executions.
+      description: |
+        Get list of all executions. Authentification is required.
+      tags:
+        - Ops
+      responses:
+        200:
+          description: The op matching the given ID
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Execution'
+        404:
+          description: No op with the given ID
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   /api-token-auth/:
     post:
       summary: Get the authentification token for a user.
@@ -493,6 +542,21 @@ definitions:
       callback_url:
         type: string
         description: Callback URL of the op
+  Execution:
+    type: object
+    properties:
+      op_id:
+        type: integer
+        description: Unique identifier representing a specific op
+      execution_id:
+        type: string
+        description: Id of the execution (application specific)
+      progress:
+        type: number
+        description: percentage representing the progress of the execution
+      info:
+        type: string
+        description: Formatted JSON information about the progress of the op
   Error:
     type: object
     properties:

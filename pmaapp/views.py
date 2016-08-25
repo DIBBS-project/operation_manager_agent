@@ -82,7 +82,7 @@ touch %s_finished
         mister_fs.run_file(random_file_name)
         op.status = "FINISHED"
         op.save()
-        return Response({"Hello"})
+        return Response(op)
 
     @list_route()
     def get_executions(self, request):
