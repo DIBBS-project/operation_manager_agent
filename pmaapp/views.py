@@ -85,8 +85,6 @@ touch %s_finished
 
         # Serializing the Op response
         serializer = self.get_serializer(op)
-        serializer.is_valid(raise_exception=True)
-
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
