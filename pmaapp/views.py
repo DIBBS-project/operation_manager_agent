@@ -84,7 +84,7 @@ touch %s_finished
         op.save()
 
         # Serializing the Op response
-        serializer = self.get_serializer(data=op)
+        serializer = self.get_serializer(op)
         serializer.is_valid(raise_exception=True)
 
         headers = self.get_success_headers(serializer.data)
