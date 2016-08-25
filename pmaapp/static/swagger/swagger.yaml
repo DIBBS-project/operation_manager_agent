@@ -388,7 +388,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /get_executions/:
+  /ops/get_executions/:
     get:
       summary: Get list of all executions.
       description: |

@@ -82,7 +82,13 @@ touch %s_finished
         mister_fs.run_file(random_file_name)
         op.status = "FINISHED"
         op.save()
-        return Response(op)
+
+        # Serializing the Op response
+        serializer = self.get_serializer(data=op)
+        serializer.is_valid(raise_exception=True)
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
     @list_route()
     def get_executions(self, request):
