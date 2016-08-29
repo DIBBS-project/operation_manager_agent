@@ -68,13 +68,17 @@ class OpViewSet(viewsets.ModelViewSet):
         mister_fs = MisterFs()
         op = Op.objects.get(pk=pk)
         print(op)
+        username = op.username
+        tmp_password = str(uuid.uuid4())
         random_file_name = str(uuid.uuid4())
         generated_script = """
 #!/bin/bash;
 #set -x;
+export USER="%s"
+export PASSWORD="%s"
 %s
 touch %s_finished
-        """ % (op.script, random_file_name)
+        """ % (username, tmp_password, op.script, random_file_name)
         mister_fs.create_file(random_file_name, generated_script)
         op.status = "RUNNING"
         op.save()
