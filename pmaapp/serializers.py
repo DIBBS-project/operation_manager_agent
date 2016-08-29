@@ -15,6 +15,10 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
+    def save(self, **kwargs):
+        from django.contrib.auth.models import User
+        User.objects.create_user(self.initial_data["username"], password=self.initial_data["password"])
+
 
 class OpSerializer(serializers.ModelSerializer):
     class Meta:
