@@ -68,7 +68,7 @@ class OpViewSet(viewsets.ModelViewSet):
         mister_fs = MisterFs()
         op = Op.objects.get(pk=pk)
         print(op)
-        username = op.username
+        username = op.user.username
         tmp_password = str(uuid.uuid4())
         random_file_name = str(uuid.uuid4())
         generated_script = """
