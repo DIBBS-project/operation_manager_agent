@@ -1,10 +1,10 @@
 swagger: '2.0'
 info:
-  title: Process manager agent API
-  description: Provision Cloud Computing resources via API.
+  title: Operation Manager Agent API
+  description: Interact with deployed Cloud Computing resources via API.
   version: "0.1.1"
 # the domain of the service
-host: 127.0.0.1:8021
+host: 127.0.0.1:8011
 # array of all schemes that your API supports
 schemes:
 # TODO: Change to HTTPS when not on localhost!
