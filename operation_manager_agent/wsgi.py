@@ -1,5 +1,5 @@
 """
-WSGI config for process_manager_agent project.
+WSGI config for operation_manager_agent project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "process_manager_agent.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "operation_manager_agent.settings")
 
 application = get_wsgi_application()

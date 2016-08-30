@@ -3,6 +3,7 @@ tmp
 .idea
 db.sqlite3
 pmaapp/migrations
+omaapp/migrations
 *.pyc
 
 # MAC OS
