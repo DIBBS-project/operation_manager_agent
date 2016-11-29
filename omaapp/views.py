@@ -68,7 +68,7 @@ class OpViewSet(viewsets.ModelViewSet):
         global TMP_PASSWORDS
         username = pk
         if username in TMP_PASSWORDS:
-            token = TOKENS[username]
+            token = TMP_PASSWORDS[username]
             return Response({"tmp_password": token}, status=status.HTTP_202_ACCEPTED)
         else:
             return Response({"msg": "Could not find a temporary password for this user: '%s'" % (username)}, status.HTTP_404_NOT_FOUND)
