@@ -36,7 +36,7 @@ class UserViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-
+TMP_PASSWORDS = {}
 class OpViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
@@ -63,13 +63,28 @@ class OpViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    @detail_route(methods=['get'])
+    def get_tmp_password(self, request, pk):
+        global TMP_PASSWORDS
+        username = pk
+        if username in TMP_PASSWORDS:
+            token = TOKENS[username]
+            return Response({"tmp_password": token}, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response({"msg": "Could not find a temporary password for this user: '%s'" % (username)}, status.HTTP_404_NOT_FOUND)
+
     @detail_route(methods=['post'])
-    def run_op(self, request, pk=None):
+    def run_op(self, request, pk):
+        global TMP_PASSWORDS
         mister_fs = MisterFs()
         op = Op.objects.get(pk=pk)
         print(op)
         username = op.user.username
-        tmp_password = str(uuid.uuid4())
+        if username in TMP_PASSWORDS:
+            tmp_password = TMP_PASSWORDS[username]
+        else:
+            tmp_password = str(uuid.uuid4())
+            TMP_PASSWORDS[username] = tmp_password
         random_file_name = str(uuid.uuid4())
         generated_script = """
 #!/bin/bash;
